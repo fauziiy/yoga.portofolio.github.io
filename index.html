@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio | Yoga Dwi</title>
+
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+  <!-- ICON -->
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- PARTICLE BACKGROUND -->
+<canvas id="particles"></canvas>
+
+<!-- DARK / LIGHT TOGGLE -->
+<button id="themeToggle" class="theme-toggle">
+  <i class='bx bx-moon'></i>
+</button>
+
+<!-- ================= HERO ================= -->
+<header class="hero glass fade-up">
+  <img src="assets/foto.png" class="profile-img" alt="Foto Profil">
+  <h1>Yoga Dwi</h1>
+  <h3>Informatics Student | AI & Data Enthusiast</h3>
+  <p>
+    Mahasiswa Informatika Universitas Teknologi Yogyakarta
+    dengan minat pada Artificial Intelligence, Data Analytics,
+    dan Web Development.
+  </p>
+
+  <div class="hero-icons">
+    <i class="bx bxl-github"></i>
+    <i class="bx bxl-linkedin"></i>
+    <i class="bx bxl-instagram"></i>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section class="section fade-up">
+  <h2 class="section-title">Tentang Saya</h2>
+  <p class="section-desc">
+    Saya adalah mahasiswa aktif Program Studi Informatika
+    Universitas Teknologi Yogyakarta. Memiliki pengalaman
+    magang di Bid TIK Polda DIY dan pernah menjadi ketua proyek
+    mata kuliah Jaringan Syaraf Tiruan. Terbiasa mengembangkan
+    sistem berbasis AI, data, dan web.
+  </p>
+</section>
+
+<!-- ================= EXPERIENCE TIMELINE ================= -->
+<section class="section timeline-section fade-up">
+  <h2 class="section-title">Experience</h2>
+  <p class="section-subtitle">Perjalanan akademik & profesional</p>
+
+  <div class="timeline">
+
+    <!-- MAGANG -->
+    <div class="timeline-item left">
+      <div class="timeline-card glass">
+        <i class="bx bx-shield-quarter timeline-icon"></i>
+        <h3>Magang Bid TIK – POLDA DIY</h3>
+        <span>2024</span>
+        <p>
+          Mengembangkan sistem WhatsApp Auto-Response untuk
+          membantu layanan komunikasi internal berbasis keyword.
+        </p>
+        <div class="tags">
+          <span>Automation</span>
+          <span>Python</span>
+          <span>WhatsApp API</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- KETUA PROYEK -->
+    <div class="timeline-item right">
+      <div class="timeline-card glass">
+        <i class="bx bx-brain timeline-icon"></i>
+        <h3>Ketua Proyek – Jaringan Syaraf Tiruan</h3>
+        <span>Universitas Teknologi Yogyakarta | 2024</span>
+        <p>
+          Memimpin tim dalam proyek SLP, MLP, CNN, dan RNN,
+          termasuk pembagian tugas, training model,
+          dan analisis performa.
+        </p>
+        <div class="tags">
+          <span>AI</span>
+          <span>Deep Learning</span>
+          <span>Python</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section class="section fade-up">
+  <h2 class="section-title">Skills</h2>
+
+  <div class="skills">
+
+    <div class="skill">
+      <span>Python</span>
+      <div class="bar"><div class="progress" data-width="90%"></div></div>
+    </div>
+
+    <div class="skill">
+      <span>Machine Learning</span>
+      <div class="bar"><div class="progress" data-width="85%"></div></div>
+    </div>
+
+    <div class="skill">
+      <span>Flask / Web Development</span>
+      <div class="bar"><div class="progress" data-width="80%"></div></div>
+    </div>
+
+    <div class="skill">
+      <span>Power BI / Data Analytics</span>
+      <div class="bar"><div class="progress" data-width="75%"></div></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section class="projects fade-up">
+  <h2 class="section-title">Projects</h2>
+  <p class="section-subtitle">Beberapa project yang pernah saya kerjakan</p>
+
+  <!-- FILTER -->
+  <div class="filter-buttons">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="ai">AI</button>
+    <button class="filter-btn" data-filter="web">Web</button>
+    <button class="filter-btn" data-filter="data">Data</button>
+  </div>
+
+  <div class="project-grid">
+
+    <div class="project-card glass" data-category="ai">
+      <img src="assets/yolo.jpg" alt="YOLO">
+      <div class="project-info">
+        <h3>Deteksi Rambu Lalu Lintas</h3>
+        <p>  Real-time traffic sign detection menggunakan YOLOv8 untuk
+  object detection berbasis deep learning. Mendukung input
+  gambar, video, dan kamera dengan visualisasi bounding box
+  serta confidence score..</p>
+        <span class="badge">AI</span>
+      </div>
+    </div>
+
+    <div class="project-card glass" data-category="web">
+      <img src="assets/wa.jpg" alt="WhatsApp Bot">
+      <div class="project-info">
+        <h3>WhatsApp Auto-Response</h3>
+        <p>  Sistem WhatsApp auto-response berbasis app untuk membalas
+  pesan otomatis menggunakan keyword matching. Dirancang untuk
+  meningkatkan efisiensi komunikasi layanan internal secara real-time..</p>
+        <span class="badge">Web</span>
+      </div>
+    </div>
+
+    <div class="project-card glass" data-category="data">
+      <img src="assets/powerbi.jpg" alt="Power BI">
+      <div class="project-info">
+        <h3>Dashboard Power BI</h3>
+        <p>
+  Interactive business intelligence dashboard menggunakan Power BI
+  untuk analisis, transformasi, dan visualisasi data. Menyajikan insight
+  melalui grafik dinamis, filter interaktif, dan laporan statistik otomatis.
+</p>
+
+        <span class="badge">Data</span>
+      </div>
+    </div>
+
+    <div class="project-card glass" data-category="ai">
+        <img src="assets/fuzzy.png" alt="Sistem Pakar Fuzzy">
+        <div class="project-info">
+        <h3>Sistem Pakar Prediksi Resiko Penyakit Diabetes</h3>
+       <p>
+  Web-based expert system menggunakan metode logika fuzzy untuk
+  prediksi resiko penyakit paru-paru. Dibangun dengan Flask serta
+  perhitungan derajat keanggotaan untuk menghasilkan rekomendasi keputusan.
+</p>
+
+    <span class="badge">AI</span>
+  </div>
+</div>
+
+<div class="project-card glass" data-category="ai">
+  <img src="assets/faceRe.png" alt="Face Recognition System">
+
+  <div class="project-info">
+    <h3>Face Recognition System</h3>
+    <p>
+      Sistem pengenalan wajah real-time menggunakan Computer Vision
+      untuk identifikasi dan verifikasi pengguna berbasis kamera.
+      Dibangun dengan Python, OpenCV, dan Deep Learning.
+    </p>
+
+    <span class="badge">AI</span>
+  </div>
+</div>
+
+
+
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="contact-footer">
+  <p class="footer-tagline">
+    "Ready to process your ideas into reality!"
+  </p>
+
+  <h2 class="footer-title">Connect With Me</h2>
+
+  <div class="contact-card">
+
+    <a href="mailto:yoga.dwirf32@gmail.com" class="contact-row">
+      <div class="icon email">
+        <i class="fa-solid fa-envelope"></i>
+      </div>
+      <span>yoga.dwirf32@gmail.com</span>
+    </a>
+
+    <a href="https://wa.me/447393063461" target="_blank" class="contact-row">
+      <div class="icon phone">
+        <i class="fa-solid fa-phone"></i>
+      </div>
+      <span>+62 821 4038 4036</span>
+    </a>
+
+    <a href="https://github.com/usernamekamu" target="_blank" class="contact-row">
+      <div class="icon github">
+        <i class="fa-brands fa-github"></i>
+      </div>
+      <span>GitHub Profile</span>
+    </a>
+
+    <a href="https://linkedin.com/in/usernamekamu" target="_blank" class="contact-row">
+      <div class="icon linkedin">
+        <i class="fa-brands fa-linkedin-in"></i>
+      </div>
+      <span>LinkedIn Profile</span>
+    </a>
+
+  </div>
+<a class="contact-row reveal">...</a>
+<footer class="contact-footer reveal">
+</footer>
+
+
+
+<!-- JS -->
+<script src="script.js"></script>
+</body>
+</html>
