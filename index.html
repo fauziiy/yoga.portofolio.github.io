@@ -1,20 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Yoga Dwi Rizki Fauzi | Data Analyst & AI Engineer</title>
+    <title>Yoga Dwi Rizki Fauzi | Data Analyst &amp; Business Intelligence</title>
+    <meta name="description" content="Portofolio Yoga Dwi Rizki Fauzi, fresh graduate Informatika yang berfokus pada Data Analytics, Business Intelligence (Power BI, SQL, Python), dan Machine Learning.">
+    <meta name="author" content="Yoga Dwi Rizki Fauzi">
+    <meta name="theme-color" content="#2563EB">
+
+    <!-- Tampilan saat link dibagikan (LinkedIn, WhatsApp).
+         SESUAIKAN alamat di bawah jika nama repository / domain berbeda. -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Yoga Dwi Rizki Fauzi | Data Analyst &amp; Business Intelligence">
+    <meta property="og:description" content="Dashboard Power BI, analisis data, dan Computer Vision. Lihat proyek dan pengalaman saya.">
+    <meta property="og:url" content="https://fauziiy.github.io/">
+    <meta property="og:image" content="https://fauziiy.github.io/assets/foto.png">
+
+    <!-- Favicon sederhana (huruf Y) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232563EB'/%3E%3Ctext x='50' y='70' font-size='64' font-weight='700' text-anchor='middle' fill='white' font-family='Arial'%3EY%3C/text%3E%3C/svg%3E">
 
     <!-- Google Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
 
-    <!-- Boxicons -->
+    <!-- Boxicons (satu-satunya library ikon) -->
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
-    <!-- Font Awesome -->
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
@@ -26,20 +38,16 @@
 
 <header class="header">
 
-    <div class="logo">
-        Yoga<span>.</span>
-    </div>
+    <a class="logo" href="#home" aria-label="Kembali ke atas">Yoga<span>.</span></a>
 
-    <nav class="navbar">
-
-        <a href="#home">Home</a>
+    <nav class="navbar" aria-label="Navigasi utama">
         <a href="#about">About</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#experience">Experience</a>
         <a href="#certification">Certification</a>
+        <a href="#education">Education</a>
         <a href="#contact">Contact</a>
-
     </nav>
 
     <div class="menu-btn">
@@ -48,245 +56,112 @@
 
 </header>
 
+<main>
+
 <!--================ HERO ================-->
 
 <section class="hero" id="home">
 
     <div class="hero-left">
 
-        <span class="hero-badge">
-            👋 Fresh Graduate Informatics
-        </span>
+        <span class="hero-badge">👋 Fresh Graduate Informatika</span>
 
         <h1>
-
             Hi, I'm
-
-            <span>
-
-                Yoga Dwi Rizki Fauzi
-
-            </span>
-
+            <span>Yoga Dwi Rizki Fauzi</span>
         </h1>
 
         <h2 class="typing-text">
-
-            Data Analyst
-            •
-            AI Engineer
-            •
-            Machine Learning Enthusiast
-
+            Data Analyst • Business Intelligence • Machine Learning
         </h2>
 
         <p>
-
-            Fresh Graduate Sarjana Informatika yang memiliki
-            ketertarikan pada bidang Data Analytics,
-            Business Intelligence,
-            Artificial Intelligence,
-            dan Machine Learning.
-
-            Berpengalaman membangun dashboard Power BI,
-            melakukan analisis data,
-            serta mengembangkan model Computer Vision
-            menggunakan YOLO melalui berbagai proyek
-            akademik dan magang.
-
+            Fresh graduate Sarjana Informatika (S.Kom.) Universitas Teknologi
+            Yogyakarta dengan minat pada Data Analytics dan Business Intelligence.
+            Berpengalaman membangun dashboard Power BI dengan Power Query dan DAX,
+            menganalisis data dengan SQL dan Python, serta mengembangkan model
+            Computer Vision menggunakan YOLO melalui proyek akademik dan magang.
         </p>
 
         <div class="hero-button">
-
-            <a href="assets/CV-Yoga.pdf" class="btn-primary" download>
-
-                Download CV
-
-            </a>
-
-            <a href="#projects" class="btn-secondary">
-
-                View Portfolio
-
-            </a>
-
+            <a href="https://drive.google.com/file/d/16Tuduv_y8vMHVZZfXzmx3auHpWO1Bpl8/view?usp=sharing" class="btn-primary" download>Download CV</a>
+            <a href="#projects" class="btn-secondary">View Portfolio</a>
         </div>
 
         <div class="social-icons">
-
-            <a href="#">
+            <a href="https://github.com/fauziiy" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                 <i class='bx bxl-github'></i>
             </a>
-
-            <a href="#">
+            <a href="https://www.linkedin.com/in/yogadwirf" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
                 <i class='bx bxl-linkedin'></i>
             </a>
-
-            <a href="#">
-                <i class='bx bxl-instagram'></i>
-            </a>
-
-            <a href="mailto:yoga.dwirf32@gmail.com">
+            <a href="mailto:yoga.dwirf32@gmail.com" aria-label="Kirim email">
                 <i class='bx bx-envelope'></i>
             </a>
-
         </div>
 
     </div>
 
     <div class="hero-right">
-
         <div class="profile-card">
-
-            <img src="assets/foto.png"
-                 alt="Yoga Dwi">
-
+            <img src="assets/foto.png" alt="Foto Yoga Dwi Rizki Fauzi" width="600" height="600" fetchpriority="high">
         </div>
-
     </div>
 
 </section>
 
 <!--================ STATS ================-->
+<!-- data-target = angka akhir counter. Samakan dengan jumlah sebenarnya. -->
 
-<section class="stats">
+<section class="stats" aria-label="Ringkasan">
 
     <div class="stat-card">
-
-        <h2 class="counter" data-target="5">7</h2>
-
-        <p>
-
-            Portfolio Projects
-
-        </p>
-
+        <h2 class="counter" data-target="7">7</h2>
+        <p>Portfolio Projects</p>
     </div>
 
     <div class="stat-card">
-
-        <h2 class="counter"
-            data-target="4">
-
-            4
-
-        </h2>
-
-        <p>
-
-            Professional Certifications
-
-        </p>
-
+        <h2 class="counter" data-target="4">4</h2>
+        <p>Professional Certifications</p>
     </div>
 
     <div class="stat-card">
-
-        <h2 class="counter"
-            data-target="1">
-
-            1
-
-        </h2>
-
-        <p>
-
-            Internship Experience
-
-        </p>
-
+        <h2 class="counter" data-target="1">1</h2>
+        <p>Internship Experience</p>
     </div>
-
-
 
 </section>
 
 <!--================ ABOUT ================-->
 
-<section class="about section"
-         id="about">
+<section class="about section" id="about">
 
     <div class="section-header">
-
-        <span>
-
-            ABOUT ME
-
-        </span>
-
-        <h2>
-
-            Transforming Data Into Insights
-
-        </h2>
-
+        <span>About Me</span>
+        <h2>Transforming Data Into Insights</h2>
     </div>
 
     <div class="about-container">
 
         <div class="about-image">
-
-            <img src="assets/foto.png"
-                 alt="Profile">
-
+            <img src="assets/foto.png" alt="Yoga Dwi Rizki Fauzi" width="600" height="600" loading="lazy" decoding="async">
         </div>
 
         <div class="about-content">
 
             <p>
-
-                Saya adalah Fresh Graduate
-                Sarjana Informatika
-                yang memiliki minat pada
-                Data Analytics,
-                Artificial Intelligence,
-                Business Intelligence,
-                dan Machine Learning.
-
-                Saya memiliki pengalaman
-                dalam pengolahan data,
-                visualisasi data,
-                dashboard development,
-                serta pengembangan model
-                Computer Vision menggunakan
-                YOLO.
-
+                Saya fresh graduate Sarjana Informatika yang tertarik mengubah
+                data mentah menjadi insight yang membantu pengambilan keputusan.
+                Pengalaman saya mencakup pengolahan dan visualisasi data,
+                pengembangan dashboard Power BI, serta pengembangan model
+                Computer Vision menggunakan YOLO.
             </p>
 
             <div class="about-info">
-
-                <div>
-
-                    <i class='bx bx-map'></i>
-
-                    Indonesia
-
-                </div>
-
-                <div>
-
-                    <i class='bx bx-book'></i>
-
-                    Bachelor of Informatics
-
-                </div>
-
-                <div>
-
-                    <i class='bx bx-briefcase'></i>
-
-                    Data Analyst
-
-                </div>
-
-                <div>
-
-                    <i class='bx bx-brain'></i>
-
-                    AI Engineer
-
-                </div>
-
+                <div><i class='bx bx-map'></i> Indonesia</div>
+                <div><i class='bx bx-book'></i> S.Kom. Informatika · IPK 3,56</div>
+                <div><i class='bx bx-briefcase'></i> Data Analyst &amp; BI</div>
+                <div><i class='bx bx-chip'></i> Machine Learning &amp; Computer Vision</div>
             </div>
 
         </div>
@@ -297,450 +172,457 @@
 
 <!--================ SKILLS ================-->
 
-<section class="skills section"
-         id="skills">
+<section class="skills section" id="skills">
 
     <div class="section-header">
-
-        <span>
-
-            SKILLS
-
-        </span>
-
-        <h2>
-
-            Technical Skills
-
-        </h2>
-
+        <span>Skills</span>
+        <h2>Technical Skills</h2>
     </div>
 
     <div class="skill-grid">
-
         <span>Python</span>
-
         <span>SQL</span>
-
         <span>Power BI</span>
-
         <span>Microsoft Excel</span>
-
         <span>DAX</span>
-
         <span>Power Query</span>
-
         <span>Pandas</span>
-
         <span>NumPy</span>
-
         <span>Matplotlib</span>
-
         <span>Scikit-Learn</span>
-
         <span>TensorFlow</span>
-
         <span>YOLO</span>
-
         <span>OpenCV</span>
-
         <span>Machine Learning</span>
-
         <span>Data Cleaning</span>
-
         <span>EDA</span>
-
         <span>Business Intelligence</span>
-
         <span>Data Visualization</span>
-
         <span>Git</span>
-
         <span>GitHub</span>
-
     </div>
 
 </section>
 
 <!--================ TECH STACK ================-->
 
-<section class="tech-stack section">
+<section class="tech-stack section" id="tech-stack">
 
     <div class="section-header">
-
-        <span>
-
-            TOOLS & TECHNOLOGIES
-
-        </span>
-
-        <h2>
-
-            Tech Stack
-
-        </h2>
-
+        <span>Tools &amp; Technologies</span>
+        <h2>Tech Stack</h2>
     </div>
 
     <div class="tech-grid">
-
-        <div class="tech-card">
-
-            <i class='bx bxl-python'></i>
-
-            <h4>Python</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bx-data'></i>
-
-            <h4>SQL</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bx-bar-chart'></i>
-
-            <h4>Power BI</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bx-table'></i>
-
-            <h4>Excel</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bx-brain'></i>
-
-            <h4>Machine Learning</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bx-camera'></i>
-
-            <h4>OpenCV</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bx-bot'></i>
-
-            <h4>YOLO</h4>
-
-        </div>
-
-        <div class="tech-card">
-
-            <i class='bx bxl-github'></i>
-
-            <h4>GitHub</h4>
-
-        </div>
-
+        <div class="tech-card"><i class='bx bxl-python'></i><h4>Python</h4></div>
+        <div class="tech-card"><i class='bx bx-data'></i><h4>SQL</h4></div>
+        <div class="tech-card"><i class='bx bx-bar-chart'></i><h4>Power BI</h4></div>
+        <div class="tech-card"><i class='bx bx-table'></i><h4>Excel</h4></div>
+        <div class="tech-card"><i class='bx bx-chip'></i><h4>Machine Learning</h4></div>
+        <div class="tech-card"><i class='bx bx-camera'></i><h4>OpenCV</h4></div>
+        <div class="tech-card"><i class='bx bx-bot'></i><h4>YOLO</h4></div>
+        <div class="tech-card"><i class='bx bxl-github'></i><h4>GitHub</h4></div>
     </div>
 
 </section>
 
-<!-- ================= PART 2 DIMULAI DARI SECTION PROJECTS ================= -->
 <!--================ PROJECTS ================-->
+<!-- Urutan: proyek data/BI di atas karena paling relevan dengan target peran.
+     Kategori (.project-category) dipakai script.js untuk membuat tombol filter. -->
 
 <section class="projects section" id="projects">
 
     <div class="section-header">
-        <span>PORTFOLIO</span>
+        <span>Portfolio</span>
         <h2>Featured Projects</h2>
         <p>
-            Beberapa proyek yang menunjukkan kemampuan saya dalam bidang
-            Data Analytics, Business Intelligence, Artificial Intelligence,
-            Machine Learning, dan System Development.
+            Beberapa proyek yang menunjukkan kemampuan saya dalam Data Analytics,
+            Business Intelligence, Artificial Intelligence, Machine Learning,
+            dan System Development.
         </p>
     </div>
 
     <div class="project-grid">
 
-        <!-- ================= Project 1 ================= -->
+        <!-- ===== Project 1: Ecommerce Dashboard ===== -->
         <div class="project-card">
-
-            <img src="assets/yolo.jpg" alt="Traffic Sign Detection">
-
+            <img src="assets/project-ecommerce.png" alt="Dashboard Power BI penjualan ecommerce" width="640" height="360" loading="lazy" decoding="async">
             <div class="project-content">
-
-                <span class="project-category">Artificial Intelligence</span>
-
-                <h3>Traffic Sign Detection using YOLO</h3>
-
-                <p>
-                    Sistem deteksi rambu lalu lintas berbasis Computer Vision
-                    menggunakan YOLOv8 dan YOLO11. Model dilatih menggunakan
-                    lebih dari 5.000 gambar dan dievaluasi menggunakan
-                    Precision, Recall, mAP, dan F1-Score.
-                </p>
-
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>YOLO</span>
-                    <span>OpenCV</span>
-                    <span>TensorFlow</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= Project 2 ================= -->
-        <div class="project-card">
-
-            <img src="assets/project-ecommerce.png" alt="Ecommerce Dashboard">
-
-            <div class="project-content">
-
                 <span class="project-category">Data Analytics</span>
-
                 <h3>Ecommerce Sales Dashboard</h3>
-
                 <p>
                     Dashboard interaktif menggunakan Power BI untuk menganalisis
-                    penjualan, profit, customer, dan product performance
-                    menggunakan Power Query serta DAX.
+                    penjualan, profit, customer, dan product performance dengan
+                    Power Query serta DAX.
+                    <!-- TAMBAHKAN insight utama, mis. "Kategori X menyumbang 40% profit" -->
                 </p>
-
                 <div class="project-tags">
                     <span>Power BI</span>
                     <span>DAX</span>
                     <span>Power Query</span>
                     <span>Excel</span>
                 </div>
-
+                <!-- GANTI href dengan link repo/dashboard project ini -->
+                <div class="project-button">
+                    <a href="https://github.com/fauziiy?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bxl-github'></i> Lihat di GitHub <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+                <template class="project-detail">
+                    <p class="detail-lead">Dashboard Power BI untuk memantau performa penjualan toko online dalam satu halaman, mulai dari penjualan dan profit sampai perilaku customer dan performa produk.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>Microsoft Excel</strong><span>Sumber dataset transaksi.</span></li>
+                        <li><strong>Power Query</strong><span>Membersihkan dan mentransformasi data sebelum dimodelkan.</span></li>
+                        <li><strong>DAX</strong><span>Membuat measure untuk metrik seperti total penjualan, profit, dan jumlah customer.</span></li>
+                        <li><strong>Power BI</strong><span>Visualisasi interaktif dengan filter dan slicer.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Mengimpor data transaksi dari Excel ke Power BI.</li>
+                        <li>Membersihkan dan merapikan data di Power Query.</li>
+                        <li>Membuat measure DAX untuk KPI utama.</li>
+                        <li>Merancang visual dan slicer agar dashboard mudah dieksplorasi.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Penjualan dan profit ditampilkan berdampingan, sehingga produk yang laku tetapi margin rendah mudah dikenali.</li>
+                        <li>Analisis customer dan product performance membantu menentukan produk atau segmen yang layak diprioritaskan.</li>
+                        <li>Filter interaktif memungkinkan pengguna menelusuri performa per periode, kategori, atau produk tanpa membuat laporan baru.</li>
+                    </ul>
+                    <!-- ISI: tambahkan 1-2 temuan berangka dari dashboard ini, mis. kategori dengan profit terbesar, bulan penjualan tertinggi -->
+                </template>
             </div>
-
         </div>
 
-        <!-- ================= Project 3 ================= -->
+        <!-- ===== Project 2: Laptop Dashboard ===== -->
         <div class="project-card">
-
-            <img src="assets/BI3.png" alt="Laptop Dashboard">
-
+            <img src="assets/BI3.png" alt="Dashboard Power BI analisis harga laptop" width="640" height="360" loading="lazy" decoding="async">
             <div class="project-content">
-
                 <span class="project-category">Business Intelligence</span>
-
                 <h3>Laptop Price Analysis Dashboard</h3>
-
                 <p>
                     Dashboard Power BI untuk menganalisis harga laptop berdasarkan
-                    brand, processor, RAM, storage, GPU, serta visualisasi
-                    Top 10 Laptop Termahal.
+                    brand, processor, RAM, storage, dan GPU, lengkap dengan
+                    visualisasi Top 10 Laptop Termahal.
                 </p>
-
                 <div class="project-tags">
                     <span>Power BI</span>
                     <span>DAX</span>
                     <span>Excel</span>
                 </div>
-
-            </div>
-
-        </div>
-
-        <!-- ================= Project 4 ================= -->
-        <div class="project-card">
-
-            <img src="assets/wa.jpg" alt="OMRELI">
-
-            <div class="project-content">
-
-                <span class="project-category">System Development</span>
-
-                <h3>WhatsApp Auto Response (OMRELI)</h3>
-
-                <p>
-                    Sistem WhatsApp Auto Response yang dikembangkan saat magang
-                    di Bidang Teknologi Informasi dan Komunikasi Polda DIY untuk
-                    memberikan layanan informasi otomatis berbasis keyword.
-                </p>
-
-                <div class="project-tags">
-                    <span>Automation</span>
-                    <span>WhatsAuto</span>
-                    <span>Google Spreadsheet</span>
+                <!-- GANTI href dengan link repo/dashboard project ini -->
+                <div class="project-button">
+                    <a href="https://github.com/fauziiy?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bxl-github'></i> Lihat di GitHub <i class='bx bx-right-arrow-alt'></i>
+                    </a>
                 </div>
-
+                <template class="project-detail">
+                    <p class="detail-lead">Dashboard Power BI untuk memahami faktor yang memengaruhi harga laptop, dari brand sampai spesifikasi perangkat keras.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>Microsoft Excel</strong><span>Sumber dan persiapan dataset laptop.</span></li>
+                        <li><strong>DAX</strong><span>Measure untuk rata-rata harga, jumlah produk, dan perbandingan antar kelompok.</span></li>
+                        <li><strong>Power BI</strong><span>Visualisasi harga per brand, processor, RAM, storage, dan GPU, termasuk peringkat Top 10 Laptop Termahal.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Menyiapkan dan merapikan dataset laptop.</li>
+                        <li>Membuat measure DAX untuk perbandingan harga.</li>
+                        <li>Menyusun visual per brand, processor, RAM, storage, dan GPU.</li>
+                        <li>Menambahkan peringkat Top 10 Laptop Termahal dan filter interaktif.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Harga dapat dibandingkan dari berbagai sisi sekaligus, sehingga terlihat spesifikasi mana yang berkaitan dengan harga tinggi.</li>
+                        <li>Peringkat Top 10 Laptop Termahal membantu melihat brand dan konfigurasi yang berada di segmen premium.</li>
+                        <li>Filter interaktif membantu calon pembeli mempersempit pilihan berdasarkan spesifikasi.</li>
+                    </ul>
+                    <!-- ISI: tambahkan temuan berangka, mis. brand dengan rata-rata harga tertinggi, rentang harga per ukuran RAM -->
+                </template>
             </div>
-
         </div>
 
-        <!-- ================= Project 5 ================= -->
+        <!-- ===== Project 3: Traffic Sign Detection ===== -->
         <div class="project-card">
-
-            <img src="assets/faceRe.png" alt="Customer Churn Prediction">
-
+            <img src="assets/yolo.jpg" alt="Hasil deteksi rambu lalu lintas menggunakan YOLO" width="640" height="360" loading="lazy" decoding="async">
             <div class="project-content">
-
-                <span class="project-category">Machine Learning</span>
-
-                <h3>Face Recognition System</h3>
-
+                <span class="project-category">Artificial Intelligence</span>
+                <h3>Traffic Sign Detection using YOLO</h3>
                 <p>
-                     Sistem pengenalan wajah real-time menggunakan Computer Vision
+                    Sistem deteksi rambu lalu lintas berbasis Computer Vision
+                    menggunakan YOLOv8 dan YOLO11. Model dilatih dengan lebih dari
+                    5.000 gambar dan dievaluasi menggunakan Precision, Recall,
+                    mAP, dan F1-Score.
+                    <!-- TAMBAHKAN hasil, mis. "mAP50 0,xx pada data uji" -->
+                </p>
+                <div class="project-tags">
+                    <span>Python</span>
+                    <span>YOLOv8</span>
+                    <span>YOLO11</span>
+                    <span>OpenCV</span>
+                </div>
+                <!-- GANTI href dengan link repo/notebook project ini -->
+                <div class="project-button">
+                    <a href="https://github.com/fauziiy?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bxl-github'></i> Lihat di GitHub <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+                <template class="project-detail">
+                    <p class="detail-lead">Sistem deteksi rambu lalu lintas berbasis Computer Vision yang membandingkan YOLOv8 dan YOLO11 pada dataset lebih dari 5.000 gambar.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>Python</strong><span>Bahasa utama untuk pelatihan dan evaluasi model.</span></li>
+                        <li><strong>YOLOv8 &amp; YOLO11</strong><span>Arsitektur deteksi objek yang dilatih dan dibandingkan.</span></li>
+                        <li><strong>OpenCV</strong><span>Pemrosesan gambar dan visualisasi hasil deteksi.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Menyiapkan dataset rambu lalu lintas (lebih dari 5.000 gambar).</li>
+                        <li>Melatih model YOLOv8 dan YOLO11.</li>
+                        <li>Mengevaluasi model dengan Precision, Recall, mAP, dan F1-Score.</li>
+                        <li>Membandingkan hasil kedua model dan menguji deteksi pada gambar.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Evaluasi memakai empat metrik sekaligus (Precision, Recall, mAP, F1-Score), sehingga kualitas model tidak hanya dinilai dari satu angka.</li>
+                        <li>Dua versi YOLO dibandingkan pada data yang sama, sehingga pemilihan model punya dasar yang terukur.</li>
+                    </ul>
+                    <!-- ISI: tambahkan hasil berangka, mis. mAP50 dan F1 masing-masing model, serta model mana yang lebih baik -->
+                </template>
+            </div>
+        </div>
+
+        <!-- ===== Project 4: Face Recognition ===== -->
+        <div class="project-card">
+            <img src="assets/faceRe.png" alt="Tampilan sistem pengenalan wajah real-time" width="640" height="360" loading="lazy" decoding="async">
+            <div class="project-content">
+                <span class="project-category">Machine Learning</span>
+                <h3>Face Recognition System</h3>
+                <p>
+                    Sistem pengenalan wajah real-time menggunakan Computer Vision
                     untuk identifikasi dan verifikasi pengguna berbasis kamera.
                     Dibangun dengan Python, OpenCV, dan Deep Learning.
                 </p>
-
                 <div class="project-tags">
                     <span>Python</span>
-                    <span>Scikit-Learn</span>
-                    <span>Pandas</span>
-                    <span>Machine Learning</span>
+                    <span>OpenCV</span>
+                    <span>Deep Learning</span>
+                    <span>Computer Vision</span>
                 </div>
-
+                <!-- GANTI href dengan link repo project ini -->
+                <div class="project-button">
+                    <a href="https://github.com/fauziiy?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bxl-github'></i> Lihat di GitHub <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+                <template class="project-detail">
+                    <p class="detail-lead">Sistem pengenalan wajah real-time berbasis kamera untuk identifikasi dan verifikasi pengguna.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>Python</strong><span>Bahasa utama aplikasi.</span></li>
+                        <li><strong>OpenCV</strong><span>Menangkap video kamera, mendeteksi wajah, dan menampilkan hasil.</span></li>
+                        <li><strong>Deep Learning</strong><span>Model untuk mengenali dan membedakan wajah.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Menangkap gambar wajah dari kamera.</li>
+                        <li>Mendeteksi area wajah pada setiap frame.</li>
+                        <li>Mengenali wajah dengan model Deep Learning.</li>
+                        <li>Menampilkan hasil identifikasi dan verifikasi secara real-time.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Pengenalan berjalan langsung dari kamera, tanpa perlu mengunggah gambar secara manual.</li>
+                        <li>Sistem mencakup dua fungsi, yaitu identifikasi (siapa orang ini) dan verifikasi (apakah benar orang ini).</li>
+                    </ul>
+                    <!-- ISI: tambahkan akurasi, jumlah wajah yang diuji, atau kondisi pengujian (cahaya, jarak) jika ada -->
+                </template>
             </div>
-
         </div>
 
-        <!-- ================= Project Baru ================= -->
-
-<div class="project-card">
-
-    <img src="assets/fuzzy.png" alt="Nama Project">
-
-    <div class="project-content">
-
-        <span class="project-category">Kategori</span>
-
-        <h3>Sistem Pakar Prediksi Resiko Penyakit Diabetes</h3>
-
-        <p>
-            Web-based expert system menggunakan metode logika fuzzy untuk
-            prediksi resiko penyakit paru-paru. Dibangun dengan Flask serta
-  perhitungan derajat keanggotaan untuk menghasilkan rekomendasi keputusan.
-        </p>
-
-        <div class="project-tags">
-            <span>Python</span>
-            <span>Machine Learning</span>
+        <!-- ===== Project 5: Sistem Pakar Fuzzy ===== -->
+        <!-- PERIKSA: judul menyebut diabetes, deskripsi lama menyebut paru-paru. Samakan sesuai project asli. -->
+        <div class="project-card">
+            <img src="assets/fuzzy.png" alt="Tampilan sistem pakar prediksi risiko diabetes" width="640" height="360" loading="lazy" decoding="async">
+            <div class="project-content">
+                <span class="project-category">Artificial Intelligence</span>
+                <h3>Sistem Pakar Prediksi Risiko Penyakit Diabetes</h3>
+                <p>
+                    Web-based expert system berbasis logika fuzzy untuk memprediksi
+                    risiko penyakit diabetes. Dibangun dengan Flask dan perhitungan
+                    derajat keanggotaan untuk menghasilkan rekomendasi keputusan.
+                </p>
+                <div class="project-tags">
+                    <span>Python</span>
+                    <span>Flask</span>
+                    <span>Fuzzy Logic</span>
+                </div>
+                <!-- GANTI href dengan link repo project ini -->
+                <div class="project-button">
+                    <a href="https://github.com/fauziiy?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bxl-github'></i> Lihat di GitHub <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+                <template class="project-detail">
+                    <p class="detail-lead">Sistem pakar berbasis web yang memprediksi tingkat risiko diabetes dengan logika fuzzy dan memberi rekomendasi keputusan.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>Python</strong><span>Logika perhitungan sistem.</span></li>
+                        <li><strong>Flask</strong><span>Framework web untuk antarmuka input dan hasil.</span></li>
+                        <li><strong>Logika Fuzzy</strong><span>Perhitungan derajat keanggotaan untuk menangani data yang tidak tegas.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Menentukan variabel input dan himpunan fuzzy.</li>
+                        <li>Menyusun aturan fuzzy dan menghitung derajat keanggotaan.</li>
+                        <li>Menghasilkan tingkat risiko dan rekomendasi keputusan.</li>
+                        <li>Membangun antarmuka web dengan Flask.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Logika fuzzy membuat hasil berupa tingkat risiko yang bertahap, bukan sekadar "ya" atau "tidak".</li>
+                        <li>Hasil disajikan sebagai rekomendasi keputusan yang mudah dipahami pengguna non-teknis.</li>
+                    </ul>
+                    <!-- ISI: sebutkan variabel input (mis. usia, kadar gula, BMI), jumlah aturan fuzzy, dan hasil pengujian jika ada -->
+                </template>
+            </div>
         </div>
 
-    </div>
-
-</div>
-
-<div class="project-card">
-
-    <img src="assets/powerbi.jpg" alt="Nama Project">
-
-    <div class="project-content">
-
-        <span class="project-category">Kategori</span>
-
-        <h3>Dashboard Power BI</h3>
-
-        <p>
-            Interactive business intelligence dashboard menggunakan Power BI
-  untuk analisis, transformasi, dan visualisasi data. Menyajikan insight
-  melalui grafik dinamis, filter interaktif, dan laporan statistik otomatis.
-        </p>
-
-        <div class="project-tags">
-            <span>Power BI</span>
-            <span>Excel</span>
-            <span>Power Quary</span>
-            <span>DAX</span>
+        <!-- ===== Project 6: OMRELI (tanpa link: sistem instansi) ===== -->
+        <div class="project-card">
+            <img src="assets/wa.jpg" alt="Ilustrasi sistem WhatsApp Auto Response OMRELI" width="640" height="360" loading="lazy" decoding="async">
+            <div class="project-content">
+                <span class="project-category">System Development</span>
+                <h3>WhatsApp Auto Response (OMRELI)</h3>
+                <p>
+                    Sistem WhatsApp Auto Response yang dikembangkan saat magang di
+                    Bidang Teknologi Informasi dan Komunikasi POLDA DIY untuk
+                    memberikan layanan informasi otomatis berbasis keyword.
+                </p>
+                <div class="project-tags">
+                    <span>Automation</span>
+                    <span>WhatsAuto</span>
+                    <span>Google Sheets</span>
+                </div>
+                <template class="project-detail">
+                    <p class="detail-lead">Sistem balasan otomatis WhatsApp yang saya kembangkan saat magang di Bidang TIK POLDA DIY untuk memberi layanan informasi berbasis keyword.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>WhatsAuto</strong><span>Mengirim balasan otomatis di WhatsApp.</span></li>
+                        <li><strong>Google Sheets</strong><span>Menyimpan dan mengelola daftar keyword dan jawaban.</span></li>
+                        <li><strong>Automation</strong><span>Alur otomatis dari pesan masuk ke balasan yang sesuai.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Menyusun daftar keyword dan jawaban layanan informasi.</li>
+                        <li>Mengelola data tersebut di Google Sheets.</li>
+                        <li>Mengatur balasan otomatis di WhatsAuto.</li>
+                        <li>Menguji sistem dan menyusun dokumentasi teknis.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Pertanyaan yang sering muncul dapat dijawab otomatis berdasarkan keyword, sehingga layanan informasi tidak bergantung pada balasan manual.</li>
+                        <li>Data keyword dan jawaban dikelola di spreadsheet, sehingga mudah diperbarui oleh pihak non-teknis.</li>
+                        <li>Seluruh sistem didokumentasikan, sehingga dapat dilanjutkan oleh orang lain.</li>
+                    </ul>
+                    <!-- CATATAN: ini sistem instansi. Pastikan tidak menampilkan data atau alur internal yang sensitif; minta izin jika perlu -->
+                </template>
+            </div>
         </div>
 
-    </div>
+        <!-- ===== Project 7: Dashboard Power BI ===== -->
+        <!-- Deskripsi masih umum. Ganti dengan nama dataset/topik dan insight spesifik. -->
+        <div class="project-card">
+            <img src="assets/powerbi.jpg" alt="Dashboard Power BI interaktif" width="640" height="360" loading="lazy" decoding="async">
+            <div class="project-content">
+                <span class="project-category">Business Intelligence</span>
+                <h3>Dashboard Power BI</h3>
+                <p>
+                    Dashboard business intelligence interaktif menggunakan Power BI
+                    untuk analisis, transformasi, dan visualisasi data, dengan grafik
+                    dinamis dan filter interaktif untuk menyajikan insight.
+                </p>
+                <div class="project-tags">
+                    <span>Power BI</span>
+                    <span>Excel</span>
+                    <span>Power Query</span>
+                    <span>DAX</span>
+                </div>
+                <!-- GANTI href dengan link repo/dashboard project ini -->
+                <div class="project-button">
+                    <a href="https://github.com/fauziiy?tab=repositories" target="_blank" rel="noopener noreferrer">
+                        <i class='bx bxl-github'></i> Lihat di GitHub <i class='bx bx-right-arrow-alt'></i>
+                    </a>
+                </div>
+                <template class="project-detail">
+                    <p class="detail-lead">Dashboard business intelligence interaktif yang mengubah data mentah menjadi grafik dinamis dan laporan statistik.</p>
+                    <h4>Tools yang digunakan</h4>
+                    <ul class="tool-list">
+                        <li><strong>Microsoft Excel</strong><span>Sumber data.</span></li>
+                        <li><strong>Power Query</strong><span>Transformasi dan pembersihan data.</span></li>
+                        <li><strong>DAX</strong><span>Measure dan perhitungan analisis.</span></li>
+                        <li><strong>Power BI</strong><span>Visualisasi, filter interaktif, dan laporan.</span></li>
+                    </ul>
+                    <h4>Alur pengerjaan</h4>
+                    <ol class="detail-steps">
+                        <li>Mengimpor data dari Excel.</li>
+                        <li>Mentransformasi data dengan Power Query.</li>
+                        <li>Membuat measure DAX untuk analisis.</li>
+                        <li>Menyusun grafik dinamis dan filter interaktif.</li>
+                    </ol>
+                    <h4>Insight &amp; hasil</h4>
+                    <ul class="insight-list">
+                        <li>Grafik dinamis dan filter interaktif memungkinkan pengguna menelusuri data sendiri.</li>
+                        <li>Transformasi data dilakukan di Power Query, sehingga proses dapat diulang saat data diperbarui.</li>
+                    </ul>
+                    <!-- ISI: sebutkan nama dataset/topik dan 1-2 temuan berangka agar project ini tidak terlihat generik -->
+                </template>
+            </div>
+        </div>
 
-</div>
     </div>
 
 </section>
+
 <!--================ EXPERIENCE ================-->
+<!-- Urutan dari yang terbaru. Project dan kelulusan sudah punya section sendiri. -->
 
 <section class="experience section" id="experience">
 
     <div class="section-header">
-        <span>EXPERIENCE</span>
+        <span>Experience</span>
         <h2>Experience Timeline</h2>
     </div>
 
     <div class="timeline">
 
         <div class="timeline-item">
-
             <div class="timeline-dot"></div>
-
             <div class="timeline-content">
-
-                <span>2025</span>
-
-                <h3>IT System Development Intern</h3>
-
-                <h4>Bid TIK Polda DIY</h4>
-
+                <span>Agustus – September 2025</span>
+                <h3>Data &amp; System Development Intern</h3>
+                <h4>Bidang TIK POLDA DIY</h4>
                 <p>
-                    Mengembangkan sistem WhatsApp Auto Response,
-                    melakukan pengujian aplikasi,
-                    mengelola data,
-                    serta menyusun dokumentasi teknis.
+                    Mengembangkan sistem WhatsApp Auto Response (OMRELI) berbasis
+                    keyword, mengelola data melalui Google Sheets, melakukan
+                    pengujian aplikasi, serta menyusun dokumentasi teknis.
                 </p>
-
             </div>
-
         </div>
 
         <div class="timeline-item">
-
             <div class="timeline-dot"></div>
-
             <div class="timeline-content">
-
-                <span>2025</span>
-
-                <h3>Traffic Sign Detection Project</h3>
-
-                <h4>Computer Vision</h4>
-
+                <span>Oktober 2024 – Juli 2025</span>
+                <h3>Part Time Crew Leader</h3>
+                <h4>Bhumi Durian</h4>
+                <!-- SESUAIKAN deskripsi dengan tanggung jawab yang sebenarnya -->
                 <p>
-                    Mengembangkan sistem deteksi rambu lalu lintas
-                    menggunakan YOLO untuk mendukung penelitian
-                    Artificial Intelligence.
+                    Memimpin dan mengoordinasikan tim crew dalam operasional harian
+                    sambil menjalani perkuliahan.
                 </p>
-
             </div>
-
-        </div>
-
-        <div class="timeline-item">
-
-            <div class="timeline-dot"></div>
-
-            <div class="timeline-content">
-
-                <span>2026</span>
-
-                <h3>Fresh Graduate</h3>
-
-                <h4>Bachelor of Informatics</h4>
-
-                <p>
-                    Lulus dari Universitas Teknologi Yogyakarta
-                    dengan fokus pada Data Analytics,
-                    Artificial Intelligence,
-                    dan Machine Learning.
-                </p>
-
-            </div>
-
         </div>
 
     </div>
@@ -752,50 +634,34 @@
 <section class="certification section" id="certification">
 
     <div class="section-header">
-        <span>CERTIFICATION</span>
+        <span>Certification</span>
         <h2>Professional Certifications</h2>
     </div>
 
     <div class="certificate-grid">
 
         <div class="certificate-card">
-
-            <i class="fa-solid fa-award"></i>
-
+            <i class='bx bx-award'></i>
             <h3>Mini Bootcamp Data Analytics</h3>
-
             <p>RevoU</p>
-
         </div>
 
         <div class="certificate-card">
-
-            <i class="fa-solid fa-award"></i>
-
+            <i class='bx bx-award'></i>
             <h3>Machine Learning Professional</h3>
-
-            <p>RapidMiner</p>
-
+            <p>Altair Engineering Inc. (RapidMiner)</p>
         </div>
 
         <div class="certificate-card">
-
-            <i class="fa-solid fa-award"></i>
-
+            <i class='bx bx-award'></i>
             <h3>Data Engineering Professional</h3>
-
-            <p>RapidMiner</p>
-
+            <p>Altair Engineering Inc. (RapidMiner)</p>
         </div>
 
         <div class="certificate-card">
-
-            <i class="fa-solid fa-award"></i>
-
-            <h3>Application & Use Case Professional</h3>
-
-            <p>RapidMiner</p>
-
+            <i class='bx bx-award'></i>
+            <h3>Application &amp; Use Case Professional</h3>
+            <p>Altair Engineering Inc. (RapidMiner)</p>
         </div>
 
     </div>
@@ -804,37 +670,26 @@
 
 <!--================ EDUCATION ================-->
 
-<section class="education section">
+<section class="education section" id="education">
 
     <div class="section-header">
-        <span>EDUCATION</span>
+        <span>Education</span>
         <h2>Academic Background</h2>
     </div>
 
     <div class="education-card">
 
-        <i class="fa-solid fa-graduation-cap"></i>
+        <i class='bx bxs-graduation'></i>
 
         <div>
-
             <h3>Universitas Teknologi Yogyakarta</h3>
-
-            <h4>Bachelor of Informatics (S.Kom.)</h4>
-
-            <p>2022 - 2026</p>
-
+            <h4>Sarjana Informatika (S.Kom.)</h4>
+            <p>2022 – 2026 · IPK 3,56</p>
             <p>
-                Relevant Coursework:
-                Data Mining,
-                Machine Learning,
-                Artificial Intelligence,
-                Business Intelligence,
-                Database,
-                Data Visualization,
-                Statistics,
-                Big Data.
+                Mata kuliah relevan: Data Mining, Machine Learning,
+                Artificial Intelligence, Business Intelligence, Database,
+                Data Visualization, Statistics, Big Data.
             </p>
-
         </div>
 
     </div>
@@ -846,58 +701,42 @@
 <section class="contact section" id="contact">
 
     <div class="section-header">
-
-        <span>CONTACT</span>
-
+        <span>Contact</span>
         <h2>Let's Work Together</h2>
-
     </div>
 
     <div class="contact-container">
 
-        <a href="mailto:yoga.dwirf32@email.com" class="contact-box">
-
-            <i class="fa-solid fa-envelope"></i>
-
+        <a href="mailto:yoga.dwirf32@gmail.com" class="contact-box">
+            <i class='bx bx-envelope'></i>
             <h3>Email</h3>
-
-            <p>yoga.dwirf32@email.com</p>
-
+            <p>yoga.dwirf32@gmail.com</p>
         </a>
 
-        <a href="https://github.com/fauziiy" class="contact-box">
-
-            <i class="fa-brands fa-github"></i>
-
+        <a href="https://github.com/fauziiy" class="contact-box" target="_blank" rel="noopener noreferrer">
+            <i class='bx bxl-github'></i>
             <h3>GitHub</h3>
-
             <p>github.com/fauziiy</p>
-
         </a>
 
-        <a href="www.linkedin.com/in/yoga-dwi-rizki-fauzi-644037212" class="contact-box">
-
-            <i class="fa-brands fa-linkedin"></i>
-
+        <a href="https://www.linkedin.com/in/yogadwirf" class="contact-box" target="_blank" rel="noopener noreferrer">
+            <i class='bx bxl-linkedin'></i>
             <h3>LinkedIn</h3>
-
-            <p>linkedin.com/in/yoga-dwi-rizki-fauzi-644037212i</p>
-
+            <p>linkedin.com/in/yogadwirf</p>
         </a>
 
-        <a href="https://wa.me/6282140384036" class="contact-box">
-
-            <i class="fa-brands fa-whatsapp"></i>
-
+        <!-- PERIKSA nomor pada href sebelum publikasi (nomor di teks lama berbeda dengan di link) -->
+        <a href="https://wa.me/6282140384036" class="contact-box" target="_blank" rel="noopener noreferrer">
+            <i class='bx bxl-whatsapp'></i>
             <h3>WhatsApp</h3>
-
-            <p>+62 821 4048 3036</p>
-
+            <p>Chat via WhatsApp</p>
         </a>
 
     </div>
 
 </section>
+
+</main>
 
 <!--================ FOOTER ================-->
 
@@ -907,30 +746,21 @@
 
         <h2>Yoga Dwi Rizki Fauzi</h2>
 
-        <p>
-            Data Analyst • AI Engineer • Machine Learning Enthusiast
-        </p>
+        <p>Data Analyst • Business Intelligence • Machine Learning</p>
 
         <div class="footer-social">
-
-            <a href="#"><i class='bx bxl-github'></i></a>
-            <a href="#"><i class='bx bxl-linkedin'></i></a>
-            <a href="#"><i class='bx bxl-instagram'></i></a>
-
+            <a href="https://github.com/fauziiy" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+            <a href="https://www.linkedin.com/in/yogadwirf" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+            <a href="mailto:yoga.dwirf32@gmail.com" aria-label="Kirim email"><i class='bx bx-envelope'></i></a>
         </div>
 
-        <p class="copyright">
-
-            © 2026 Yoga Dwi Rizki Fauzi.
-            All Rights Reserved.
-
-        </p>
+        <p class="copyright">© 2026 Yoga Dwi Rizki Fauzi. All Rights Reserved.</p>
 
     </div>
 
 </footer>
 
-<script src="script.js"></script>
+<script src="script.js" defer></script>
 
 </body>
 </html>
