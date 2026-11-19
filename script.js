@@ -1,8 +1,12 @@
 const CONFIG = {
-  sheetUrl:
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vTAx6ebwC4bv1iMK5ZaKLTVITkaagB9oL-QLFJxQ2Z4uXUobejhkTnf6t969wzZQwOhEWPutPcfE2-P/pub?gid=1786882617&single=true&output=csv",
-
+  spreadsheetUrl:
+    "https://docs.google.com/spreadsheets/d/1i-kfXjLd5-IVWnz82wj-WHW58nbnqStSbkdz9TdMNs8/edit?usp=sharing",
+  projectSheet: "Project",
+  certSheet: "certificates",
+  sheetUrl: "",
   csvFile: "projects.csv",
+  certSheetUrl: "",
+  certCsvFile: "certificates.csv",
 };
 
 (() => {
@@ -131,13 +135,14 @@ const CONFIG = {
     });
   }
 
-  /* Jumlah project di statistik mengikuti jumlah kartu yang tampil */
-  const setProjectCount = (n) => {
-    const el = document.getElementById("projectCount");
+  /* Angka di statistik mengikuti jumlah kartu yang tampil */
+  const setCount = (id, n) => {
+    const el = document.getElementById(id);
     if (!el) return;
     el.dataset.target = String(n);
     if (!animateCounters || el.dataset.done) el.textContent = n;
   };
+  const setProjectCount = (n) => setCount("projectCount", n);
 
   /* ================= ANIMASI MUNCUL SAAT SCROLL ================= */
   /* Class "reveal" ditambahkan lewat JS, jadi kalau JS mati
@@ -406,12 +411,17 @@ const CONFIG = {
       .filter(Boolean);
 
   /* Hanya izinkan http(s), atau alamat relatif (mis. assets/foto.png) */
+  /* Link yang ditulis tanpa https:// (mis. www.credly.com/..., github.com/...) */
+  const DOMAIN_LIKE =
+    /^(?:www\.|(?:[a-z0-9-]+\.)+(?:com|org|net|io|co|id|edu|dev|app|ai|me|link|page)(?:[/:?#]|$))/i;
+
   const safeUrl = (u) => {
     u = (u || "").trim();
     if (!u) return "";
     if (/^[a-z][a-z0-9+.-]*:/i.test(u)) {
       return /^https?:/i.test(u) ? u : "";
     }
+    if (DOMAIN_LIKE.test(u)) return "https://" + u;
     return u;
   };
 
@@ -611,35 +621,484 @@ const CONFIG = {
     }
   };
 
-  /* Urutan sumber: Google Sheets -> projects.csv -> kartu di index.html */
-  const loadProjects = async () => {
-    if (!grid) return;
-    const sources = [CONFIG.sheetUrl, CONFIG.csvFile].filter(Boolean);
+  /* ==========================================================
+     SERTIFIKAT (gambar / PDF) dari spreadsheet
+     Kolom: aktif, urutan, judul, penerbit, tanggal, file, pratinjau,
+            link_verifikasi, tipe, deskripsi
+  ========================================================== */
+  const certGrid = document.querySelector(".certificate-grid");
+  const canModal = typeof HTMLDialogElement === "function";
+  /* Nama kolom yang dikenali (selain "file" dan "link_verifikasi") */
+  const FILE_KEYS = [
+    "file",
+    "link",
+    "link_sertifikat",
+    "url",
+    "berkas",
+    "tautan",
+  ];
+  const VERIF_KEYS = [
+    "link_verifikasi",
+    "verifikasi",
+    "link_kredensial",
+    "kredensial",
+  ];
+  const pick = (o, keys) => {
+    for (const k of keys) if (o[k]) return o[k];
+    return "";
+  };
 
-    for (const url of sources) {
-      try {
-        const items = parseProjects(parseCSV(await fetchText(url)));
-        if (items.length) {
-          console.info(
-            "Project dimuat dari",
-            url,
-            "-",
-            items.length,
-            "baris aktif:",
-            items.map((x) => x.judul),
-          );
-          renderProjects(items);
-          return;
-        }
-        console.warn("Tidak ada project aktif di:", url);
-      } catch (err) {
-        console.warn("Gagal memuat data project dari:", url, err);
-      }
+  const IMG_EXT = /\.(?:png|jpe?g|webp|gif|avif|svg)(?:[?#].*)?$/i;
+  const PDF_EXT = /\.pdf(?:[?#].*)?$/i;
+
+  /* Tentukan jenis file dari link: Google Drive, PDF, gambar, atau lainnya */
+  const fileInfo = (raw, tipe) => {
+    const safe = safeUrl(raw);
+    if (!safe) return null;
+
+    const id = driveId(safe);
+    if (id) {
+      /* Drive: halaman /preview bisa menampilkan gambar maupun PDF */
+      return {
+        kind: "drive",
+        open: "https://drive.google.com/file/d/" + id + "/view",
+        embed: "https://drive.google.com/file/d/" + id + "/preview",
+        thumbs: imageCandidates(safe),
+      };
     }
+
+    const t = (tipe || "").toLowerCase();
+    if (t === "pdf" || PDF_EXT.test(safe)) {
+      return { kind: "pdf", open: safe, embed: safe, thumbs: [] };
+    }
+    if (
+      ["gambar", "image", "jpg", "jpeg", "png"].includes(t) ||
+      IMG_EXT.test(safe)
+    ) {
+      return {
+        kind: "image",
+        open: safe,
+        embed: "",
+        url: safe,
+        thumbs: [safe],
+      };
+    }
+    return { kind: "link", open: safe, embed: "", thumbs: [] };
+  };
+
+  /* ---------- Modal pratinjau sertifikat (dibuat sekali) ---------- */
+  let openCert = null;
+
+  const ensureCertDialog = () => {
+    if (openCert) return;
+
+    const dialog = document.createElement("dialog");
+    dialog.className = "project-modal cert-modal";
+    dialog.setAttribute("aria-labelledby", "certModalTitle");
+    dialog.innerHTML =
+      "<button type='button' class='modal-close' aria-label='Tutup pratinjau'>" +
+      "<i class='bx bx-x'></i></button>" +
+      "<div class='modal-inner'><div class='modal-body'>" +
+      "<h3 id='certModalTitle'></h3>" +
+      "<p class='cert-meta'></p>" +
+      "<p class='cert-desc'></p>" +
+      "<div class='cert-viewer'></div>" +
+      "<div class='modal-actions'></div>" +
+      "</div></div>";
+    document.body.appendChild(dialog);
+
+    const mTitle = dialog.querySelector("#certModalTitle");
+    const mMeta = dialog.querySelector(".cert-meta");
+    const mDesc = dialog.querySelector(".cert-desc");
+    const viewer = dialog.querySelector(".cert-viewer");
+    const mActions = dialog.querySelector(".modal-actions");
+    let lastTrigger = null;
+
+    const showEmpty = () =>
+      viewer.replaceChildren(
+        el(
+          "p",
+          "cert-empty",
+          "Pratinjau tidak tersedia untuk file ini. Gunakan tombol di bawah untuk membukanya.",
+        ),
+      );
+
+    openCert = (c, trigger) => {
+      mTitle.textContent = c.judul;
+      const meta = [c.penerbit, c.tanggal].filter(Boolean).join(" · ");
+      mMeta.textContent = meta;
+      mMeta.hidden = !meta;
+      mDesc.textContent = c.deskripsi;
+      mDesc.hidden = !c.deskripsi;
+
+      const f = c.file;
+      viewer.replaceChildren();
+      viewer.className = "cert-viewer";
+
+      if (f.kind === "image") {
+        const img = document.createElement("img");
+        img.className = "cert-view-img";
+        img.referrerPolicy = "no-referrer";
+        img.alt = "Sertifikat " + c.judul;
+        img.addEventListener("error", showEmpty);
+        img.src = f.url;
+        viewer.append(img);
+      } else if (f.embed) {
+        const frame = document.createElement("iframe");
+        frame.className = "cert-frame";
+        frame.title = "Sertifikat " + c.judul;
+        frame.src = f.embed;
+        viewer.classList.add("has-frame");
+        viewer.append(frame);
+      } else {
+        showEmpty();
+      }
+
+      mActions.replaceChildren();
+      const open = document.createElement("a");
+      open.className = "btn-primary";
+      open.href = f.open;
+      open.target = "_blank";
+      open.rel = "noopener noreferrer";
+      open.textContent = "Buka di tab baru";
+      mActions.append(open);
+
+      if (c.verif) {
+        const v = document.createElement("a");
+        v.className = "btn-secondary";
+        v.href = c.verif;
+        v.target = "_blank";
+        v.rel = "noopener noreferrer";
+        v.textContent = "Verifikasi kredensial";
+        mActions.append(v);
+      }
+
+      lastTrigger = trigger || null;
+      document.documentElement.classList.add("modal-open");
+      dialog.showModal();
+      dialog.querySelector(".modal-inner").scrollTop = 0;
+    };
+
+    dialog
+      .querySelector(".modal-close")
+      .addEventListener("click", () => dialog.close());
+
+    dialog.addEventListener("click", (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    dialog.addEventListener("close", () => {
+      viewer.replaceChildren(); /* hentikan pemuatan PDF/gambar */
+      document.documentElement.classList.remove("modal-open");
+      if (lastTrigger && lastTrigger.isConnected) lastTrigger.focus();
+    });
+  };
+
+  /* ---------- Kartu sertifikat ---------- */
+  const buildCertCard = (o) => {
+    const c = {
+      judul: o.judul,
+      penerbit: o.penerbit || "",
+      tanggal: o.tanggal || "",
+      deskripsi: o.deskripsi || "",
+      file: fileInfo(pick(o, FILE_KEYS), o.tipe_file || o.tipe),
+      verif: "",
+    };
+
+    const rawFile = pick(o, FILE_KEYS);
+    const rawVerif = pick(o, VERIF_KEYS);
+    const v = safeUrl(rawVerif);
+    c.verif = /^https?:\/\//i.test(v) ? v : "";
+
+    if (rawFile && !c.file) {
+      console.warn(
+        "Link file tidak valid untuk sertifikat:",
+        o.judul,
+        JSON.stringify(rawFile),
+      );
+    } else if (
+      rawFile &&
+      !/[/]/.test(rawFile) &&
+      !/^[a-z][a-z0-9+.-]*:/i.test(rawFile)
+    ) {
+      console.warn(
+        "Kolom file untuk '" +
+          o.judul +
+          "' berisi '" +
+          rawFile +
+          "', bukan link. " +
+          "Jika itu chip Drive, hapus lalu tempel ulang sebagai teks biasa (Ctrl+Shift+V).",
+      );
+    }
+    if (rawVerif && !c.verif) {
+      console.warn(
+        "Link verifikasi tidak valid untuk sertifikat:",
+        o.judul,
+        JSON.stringify(rawVerif),
+      );
+    }
+
+    const card = el("div", "certificate-card");
+
+    /* Gambar kecil di kartu: kolom pratinjau, atau otomatis dari file */
+    const preview = o.pratinjau
+      ? imageCandidates(o.pratinjau)
+      : c.file
+        ? c.file.thumbs
+        : [];
+    const iconCls =
+      c.file && c.file.kind === "pdf" ? "bx bxs-file-pdf" : "bx bx-award";
+
+    if (preview.length) {
+      const thumb = el("div", "cert-thumb");
+      const img = document.createElement("img");
+      let tried = 0;
+      img.referrerPolicy = "no-referrer";
+      img.alt = "Pratinjau sertifikat " + c.judul;
+      img.loading = "lazy";
+      img.decoding = "async";
+      img.addEventListener("error", () => {
+        tried++;
+        if (tried < preview.length) img.src = preview[tried];
+        else thumb.replaceWith(el("i", iconCls)); /* gagal: tampilkan ikon */
+      });
+      img.src = preview[0];
+      thumb.append(img);
+      card.append(thumb);
+    } else {
+      card.append(el("i", iconCls));
+    }
+
+    card.append(el("h3", "", c.judul));
+    if (c.penerbit) card.append(el("p", "", c.penerbit));
+    if (c.tanggal) card.append(el("p", "cert-date", c.tanggal));
+
+    if (c.file || c.verif) {
+      const actions = el("div", "cert-actions");
+
+      if (c.file) {
+        const btn = el("button", "cert-btn");
+        btn.type = "button";
+        if (canModal) btn.setAttribute("aria-haspopup", "dialog");
+        btn.append("Lihat sertifikat ", el("i", "bx bx-show"));
+        actions.append(btn);
+
+        card.classList.add("is-clickable");
+        card.addEventListener("click", (e) => {
+          if (e.target.closest("a")) return;
+          if (!canModal) {
+            window.open(c.file.open, "_blank", "noopener");
+            return;
+          }
+          ensureCertDialog();
+          openCert(c, btn);
+        });
+      }
+
+      if (c.verif) {
+        const a = document.createElement("a");
+        a.className = "cert-link";
+        a.href = c.verif;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        a.append("Verifikasi ", el("i", "bx bx-link-external"));
+        actions.append(a);
+      }
+
+      card.append(actions);
+    }
+
+    return card;
+  };
+
+  const renderCertificates = (items) => {
+    if (!items.some((o) => pick(o, FILE_KEYS) || pick(o, VERIF_KEYS))) {
+      console.warn(
+        "Tidak ada sertifikat yang punya link. Isi kolom 'file' (link sertifikat) atau " +
+          "'link_verifikasi'. Kolom yang terbaca:",
+        Object.keys(items[0]).filter((k) => k !== "index"),
+      );
+    }
+    certGrid.replaceChildren(...items.map(buildCertCard));
+    addReveal(certGrid.querySelectorAll(".certificate-card"));
+    setCount("certCount", items.length);
   };
 
   /* Kartu dari index.html langsung dipasang fiturnya, lalu diganti
      jika data spreadsheet berhasil dimuat. */
   setupProjects();
-  loadProjects();
+
+  /* ==========================================================
+     SUMBER DATA
+     Urutan: (1) satu link spreadsheet, dibaca per nama tab;
+     (2) link CSV "Publish to web"; (3) file CSV di repository;
+     (4) kartu yang tertulis di index.html.
+  ========================================================== */
+  const sheetId = (() => {
+    const m = (CONFIG.spreadsheetUrl || "").match(
+      /spreadsheets\/d\/(?!e\/)([\w-]{20,})/,
+    );
+    return m ? m[1] : "";
+  })();
+
+  if (CONFIG.spreadsheetUrl && !sheetId) {
+    console.warn(
+      "spreadsheetUrl tidak dikenali. Pakai link dari tombol Bagikan " +
+        "(https://docs.google.com/spreadsheets/d/ID/edit...), bukan link Publish to web.",
+    );
+  }
+
+  const gvizUrl = (name, tqx) =>
+    "https://docs.google.com/spreadsheets/d/" +
+    sheetId +
+    "/gviz/tq?headers=1&sheet=" +
+    encodeURIComponent(name) +
+    "&tqx=" +
+    encodeURIComponent(tqx);
+
+  /* Google diam-diam memberi tab pertama jika nama tab salah, jadi pastikan
+     kolomnya sesuai dengan jenis data yang diminta. */
+  const checkRows = (rows, name, anyOf) => {
+    const keys = (rows[0] || []).map(normKey);
+    if (!keys.includes("judul") || !anyOf.some((k) => keys.includes(k))) {
+      throw new Error(
+        'Tab "' + name + '" tidak ditemukan atau kolomnya tidak sesuai',
+      );
+    }
+    return rows;
+  };
+
+  /* (a) CSV lewat fetch */
+  const gvizCsv = (name, anyOf) => async () => {
+    const text = await fetchText(gvizUrl(name, "out:csv"));
+    if (/^\s*<(?:!doctype|html)/i.test(text)) {
+      throw new Error(
+        "Spreadsheet belum dibagikan sebagai 'Siapa saja yang memiliki link'",
+      );
+    }
+    return checkRows(parseCSV(text), name, anyOf);
+  };
+
+  /* (b) Cadangan: JSONP lewat tag <script> (tidak terkena aturan CORS) */
+  let jsonpCount = 0;
+  const gvizJsonp = (name, anyOf) => () =>
+    new Promise((resolve, reject) => {
+      const cb = "__gviz" + Date.now().toString(36) + jsonpCount++;
+      const script = document.createElement("script");
+      let timer = null;
+      const finish = () => {
+        clearTimeout(timer);
+        delete window[cb];
+        script.remove();
+      };
+      timer = setTimeout(() => {
+        finish();
+        reject(new Error("Waktu habis saat membaca spreadsheet"));
+      }, 8000);
+
+      window[cb] = (resp) => {
+        finish();
+        try {
+          if (!resp || resp.status !== "ok" || !resp.table) {
+            throw new Error(
+              "Spreadsheet tidak bisa dibaca (cek pengaturan berbagi)",
+            );
+          }
+          const cell = (c) =>
+            c == null ? "" : String(c.f != null ? c.f : c.v == null ? "" : c.v);
+          const head = resp.table.cols.map((c) => c.label || "");
+          const rows = [head].concat(
+            resp.table.rows.map((r) =>
+              head.map((_, i) => cell((r.c || [])[i])),
+            ),
+          );
+          resolve(checkRows(rows, name, anyOf));
+        } catch (err) {
+          reject(err);
+        }
+      };
+      script.onerror = () => {
+        finish();
+        reject(new Error("Gagal memuat spreadsheet"));
+      };
+      script.src = gvizUrl(name, "out:json;responseHandler:" + cb);
+      document.head.appendChild(script);
+    });
+
+  const csvSource = (url) => async () => parseCSV(await fetchText(url));
+
+  const sourcesFor = (sheetName, anyOf, csvUrl, repoFile) => {
+    const list = [];
+    if (sheetId) {
+      list.push({
+        name: "Google Sheets, tab " + sheetName,
+        get: gvizCsv(sheetName, anyOf),
+      });
+      list.push({
+        name: "Google Sheets (JSONP), tab " + sheetName,
+        get: gvizJsonp(sheetName, anyOf),
+      });
+    }
+    if (csvUrl) list.push({ name: csvUrl, get: csvSource(csvUrl) });
+    if (repoFile) list.push({ name: repoFile, get: csvSource(repoFile) });
+    return list;
+  };
+
+  const loadInto = async (sources, render, label, keep) => {
+    for (const src of sources) {
+      try {
+        const items = parseProjects(await src.get()).filter(keep);
+        if (items.length) {
+          console.info(
+            label + " dimuat dari",
+            src.name,
+            "-",
+            items.length,
+            "baris aktif:",
+            items.map((x) => x.judul),
+          );
+          render(items);
+          return;
+        }
+        console.warn("Tidak ada " + label + " aktif di:", src.name);
+      } catch (err) {
+        console.warn(
+          "Gagal memuat " + label + " dari:",
+          src.name,
+          "-",
+          err.message || err,
+        );
+      }
+    }
+  };
+
+  /* Baris sertifikat yang terlanjur ada di tab project tidak ditampilkan sebagai project */
+  const notCert = (o) => !/^(?:sert|cert)/i.test(o.jenis || "");
+
+  if (grid) {
+    loadInto(
+      sourcesFor(
+        CONFIG.projectSheet,
+        ["kategori", "deskripsi"],
+        CONFIG.sheetUrl,
+        CONFIG.csvFile,
+      ),
+      renderProjects,
+      "Project",
+      notCert,
+    );
+  }
+  if (certGrid) {
+    loadInto(
+      sourcesFor(
+        CONFIG.certSheet,
+        ["penerbit", "file"],
+        CONFIG.certSheetUrl,
+        CONFIG.certCsvFile,
+      ),
+      renderCertificates,
+      "Sertifikat",
+      () => true,
+    );
+  }
 })();
