@@ -3,7 +3,9 @@ const CONFIG = {
     "https://docs.google.com/spreadsheets/d/1i-kfXjLd5-IVWnz82wj-WHW58nbnqStSbkdz9TdMNs8/edit?usp=sharing",
   projectSheet: "Project",
   certSheet: "certificates",
-  sheetUrl: "",
+
+  sheetUrl:
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vT5WA6hujjnnz5EZPgeSZUXtT_3g312lwx5sLAPgpVFtYZD067ea1-T4mrvFl7tR7qmnZpI8kVXjOJ5/pub?gid=701782256&single=true&output=csv",
   csvFile: "projects.csv",
   certSheetUrl: "",
   certCsvFile: "certificates.csv",
@@ -13,7 +15,7 @@ const CONFIG = {
   "use strict";
 
   const reduceMotion = window.matchMedia(
-    "(prefers-reduced-motion: reduce)",
+    "(prefers-reduced-motion: reduce)"
   ).matches;
   const hasObserver = "IntersectionObserver" in window;
   const animateCounters = hasObserver && !reduceMotion;
@@ -37,7 +39,7 @@ const CONFIG = {
     };
 
     menuBtn.addEventListener("click", () =>
-      setMenu(!navbar.classList.contains("active")),
+      setMenu(!navbar.classList.contains("active"))
     );
 
     menuBtn.addEventListener("keydown", (e) => {
@@ -87,12 +89,12 @@ const CONFIG = {
           navLinks.forEach((a) => {
             a.classList.toggle(
               "active",
-              a.getAttribute("href") === "#" + entry.target.id,
+              a.getAttribute("href") === "#" + entry.target.id
             );
           });
         });
       },
-      { rootMargin: "-45% 0px -50% 0px" },
+      { rootMargin: "-45% 0px -50% 0px" }
     );
     navSections.forEach((section) => spy.observe(section));
   }
@@ -123,7 +125,7 @@ const CONFIG = {
           obs.unobserve(entry.target);
         });
       },
-      { threshold: 0.6 },
+      { threshold: 0.6 }
     );
     counters.forEach((el) => {
       el.textContent = "0";
@@ -135,7 +137,6 @@ const CONFIG = {
     });
   }
 
-  /* Angka di statistik mengikuti jumlah kartu yang tampil */
   const setCount = (id, n) => {
     const el = document.getElementById(id);
     if (!el) return;
@@ -144,9 +145,6 @@ const CONFIG = {
   };
   const setProjectCount = (n) => setCount("projectCount", n);
 
-  /* ================= ANIMASI MUNCUL SAAT SCROLL ================= */
-  /* Class "reveal" ditambahkan lewat JS, jadi kalau JS mati
-     semua konten tetap terlihat. */
   let revealObserver = null;
 
   if (animateCounters) {
@@ -161,7 +159,7 @@ const CONFIG = {
           setTimeout(() => el.classList.remove("reveal", "active"), 900);
         });
       },
-      { threshold: 0.12 },
+      { threshold: 0.12 }
     );
   }
 
@@ -177,13 +175,10 @@ const CONFIG = {
     document.querySelectorAll(
       ".section-header, .about-container, .skill-grid, .tech-card, " +
         ".project-card, .timeline-item, .certificate-card, " +
-        ".education-card, .contact-box",
-    ),
+        ".education-card, .contact-box"
+    )
   );
 
-  /* ==========================================================
-     PROJECT: filter, detail (modal), dan data dari spreadsheet
-  ========================================================== */
   const grid = document.querySelector(".project-grid");
 
   const el = (tag, cls, text) => {
@@ -198,7 +193,49 @@ const CONFIG = {
     return c ? c.textContent.trim() : "";
   };
 
-  /* ---------- Modal detail (dibuat sekali) ---------- */
+  const fillViewer = (viewer, f, label) => {
+    viewer.replaceChildren();
+    viewer.classList.remove("has-frame");
+    const showEmpty = () => {
+      viewer.classList.remove("has-frame");
+      viewer.replaceChildren(
+        el("p", "cert-empty",
+          "Pratinjau tidak tersedia untuk file ini. Gunakan tombol di bawah untuk membukanya.")
+      );
+    };
+    if (!f) {
+      viewer.hidden = true;
+      return;
+    }
+    viewer.hidden = false;
+    if (f.kind === "image") {
+      const img = document.createElement("img");
+      img.className = "cert-view-img";
+      img.referrerPolicy = "no-referrer";
+      img.alt = label;
+      img.addEventListener("error", showEmpty);
+      img.src = f.url;
+      viewer.append(img);
+    } else if (f.embed) {
+      const frame = document.createElement("iframe");
+      frame.className = "cert-frame";
+      frame.title = label;
+      frame.src = f.embed;
+      viewer.classList.add("has-frame");
+      viewer.append(frame);
+    } else {
+      showEmpty();
+    }
+  };
+
+  const mediaOf = (card) => {
+    if (card._media) return card._media;
+    const img = card.querySelector("img");
+    if (!img) return null;
+    const u = img.currentSrc || img.src;
+    return { kind: "image", url: u, open: u, embed: "", thumbs: [] };
+  };
+
   let openDetail = null;
 
   const ensureDialog = () => {
@@ -211,7 +248,7 @@ const CONFIG = {
       "<button type='button' class='modal-close' aria-label='Tutup detail'>" +
       "<i class='bx bx-x'></i></button>" +
       "<div class='modal-inner'>" +
-      "<img class='modal-img' alt=''>" +
+      "<div class='cert-viewer modal-media'></div>" +
       "<div class='modal-body'>" +
       "<span class='project-category'></span>" +
       "<h3 id='projectModalTitle'></h3>" +
@@ -220,7 +257,7 @@ const CONFIG = {
       "</div></div>";
     document.body.appendChild(dialog);
 
-    const mImg = dialog.querySelector(".modal-img");
+    const mMedia = dialog.querySelector(".modal-media");
     const mCat = dialog.querySelector(".project-category");
     const mTitle = dialog.querySelector("#projectModalTitle");
     const mDetail = dialog.querySelector(".modal-detail");
@@ -228,18 +265,25 @@ const CONFIG = {
     let lastTrigger = null;
 
     openDetail = (card, trigger) => {
-      const img = card.querySelector("img");
-      mImg.src = img ? img.currentSrc || img.src : "";
-      mImg.alt = img ? img.alt : "";
-      mImg.hidden = !img;
-      mCat.textContent = categoryOf(card);
+      const media = mediaOf(card);
       mTitle.textContent = card.querySelector("h3").textContent.trim();
+      fillViewer(mMedia, media, "Tampilan project " + mTitle.textContent);
+      mCat.textContent = categoryOf(card);
 
-      mDetail.replaceChildren(
-        card.querySelector("template.project-detail").content.cloneNode(true),
-      );
+      const tpl = card.querySelector("template.project-detail");
+      mDetail.replaceChildren(...(tpl ? [tpl.content.cloneNode(true)] : []));
+      mDetail.hidden = !tpl;
 
       mActions.replaceChildren();
+      if (media && media.open) {
+        const o = document.createElement("a");
+        o.className = "btn-secondary";
+        o.href = media.open;
+        o.target = "_blank";
+        o.rel = "noopener noreferrer";
+        o.textContent = media.kind === "pdf" || media.kind === "drive" ? "Buka dokumen di tab baru" : "Buka gambar di tab baru";
+        mActions.appendChild(o);
+      }
       const repo = card.querySelector(".project-button a");
       if (repo) {
         const link = document.createElement("a");
@@ -267,6 +311,7 @@ const CONFIG = {
     });
 
     dialog.addEventListener("close", () => {
+      mMedia.replaceChildren(); /* hentikan pemuatan PDF/gambar */
       document.documentElement.classList.remove("modal-open");
       if (lastTrigger && lastTrigger.isConnected) lastTrigger.focus();
     });
@@ -291,11 +336,7 @@ const CONFIG = {
       bar.setAttribute("aria-label", "Filter project");
 
       ["Semua", ...categories].forEach((name, i) => {
-        const btn = el(
-          "button",
-          "filter-btn" + (i === 0 ? " active" : ""),
-          name,
-        );
+        const btn = el("button", "filter-btn" + (i === 0 ? " active" : ""), name);
         btn.type = "button";
         btn.dataset.filter = i === 0 ? "all" : name;
         bar.appendChild(btn);
@@ -319,8 +360,8 @@ const CONFIG = {
     }
 
     /* Detail: hanya untuk kartu yang punya <template class="project-detail"> */
-    const detailCards = cards.filter((c) =>
-      c.querySelector("template.project-detail"),
+    const detailCards = cards.filter(
+      (c) => c.querySelector("template.project-detail") || c._media
     );
 
     if (detailCards.length && typeof HTMLDialogElement === "function") {
@@ -339,7 +380,11 @@ const CONFIG = {
         const btn = el("button", "detail-btn");
         btn.type = "button";
         btn.setAttribute("aria-haspopup", "dialog");
-        btn.innerHTML = "Lihat detail <i class='bx bx-right-arrow-alt'></i>";
+        const hasTpl = !!card.querySelector("template.project-detail");
+        const m = card._media;
+        btn.innerHTML =
+          (hasTpl ? "Lihat detail" : m && (m.kind === "pdf" || m.kind === "drive") ? "Lihat dokumen" : "Lihat gambar") +
+          " <i class='bx bx-right-arrow-alt'></i>";
         wrap.prepend(btn);
 
         card.classList.add("is-clickable");
@@ -351,9 +396,6 @@ const CONFIG = {
     }
   };
 
-  /* ---------- Spreadsheet (CSV) -> kartu project ---------- */
-
-  /* Pembaca CSV (mendukung tanda kutip, koma, dan baris baru di dalam sel) */
   const parseCSV = (text) => {
     const rows = [];
     let row = [];
@@ -403,15 +445,13 @@ const CONFIG = {
       .replace(/[^a-z0-9]+/g, "_")
       .replace(/^_+|_+$/g, "");
 
-  /* Daftar dipisah dengan | atau baris baru (Alt+Enter di Sheets) */
   const splitList = (s) =>
     (s || "")
       .split(/\s*(?:\||\n)\s*/)
       .map((x) => x.trim())
       .filter(Boolean);
 
-  /* Hanya izinkan http(s), atau alamat relatif (mis. assets/foto.png) */
-  /* Link yang ditulis tanpa https:// (mis. www.credly.com/..., github.com/...) */
+
   const DOMAIN_LIKE =
     /^(?:www\.|(?:[a-z0-9-]+\.)+(?:com|org|net|io|co|id|edu|dev|app|ai|me|link|page)(?:[/:?#]|$))/i;
 
@@ -425,13 +465,9 @@ const CONFIG = {
     return u;
   };
 
-  /* Link "Bagikan" Google Drive tidak bisa dipakai langsung sebagai gambar.
-     Ambil ID file-nya, lalu pakai alamat gambar langsung. Ada dua alamat
-     cadangan; yang pertama gagal, dicoba yang kedua. File harus dibagikan
-     dengan akses "Siapa saja yang memiliki link". */
   const driveId = (u) => {
     const m = u.match(
-      /^https?:\/\/(?:drive|docs)\.google\.com\/(?:file\/d\/|(?:open|uc|thumbnail)\?(?:[^#]*&)?id=)([\w-]{10,})/i,
+      /^https?:\/\/(?:drive|docs)\.google\.com\/(?:file\/d\/|(?:open|uc|thumbnail)\?(?:[^#]*&)?id=)([\w-]{10,})/i
     );
     return m ? m[1] : "";
   };
@@ -465,17 +501,14 @@ const CONFIG = {
       .filter((o) => o.judul)
       .filter((o) => !off.includes((o.aktif || "ya").toLowerCase()))
       .sort((a, b) => {
-        /* Kolom urutan terisi: urut naik (1 paling atas).
-           Kolom urutan kosong = project baru: tampil PALING ATAS,
-           dan baris yang lebih bawah di sheet (lebih baru) tampil lebih dulu. */
+
         const rank = (o) => {
           const n = parseFloat(o.urutan);
           return Number.isFinite(n) ? n : -Infinity;
         };
         const ra = rank(a);
         const rb = rank(b);
-        if (ra === rb)
-          return ra === -Infinity ? b.index - a.index : a.index - b.index;
+        if (ra === rb) return ra === -Infinity ? b.index - a.index : a.index - b.index;
         return ra < rb ? -1 : 1;
       });
   };
@@ -537,31 +570,43 @@ const CONFIG = {
   const buildCard = (o) => {
     const card = el("div", "project-card");
 
-    const sources = imageCandidates(o.gambar);
-    if (sources.length) {
-      const img = document.createElement("img");
-      let tried = 0;
-      img.referrerPolicy = "no-referrer";
-      img.src = sources[0];
-      img.alt = o.alt_gambar || "Tampilan project " + o.judul;
-      img.width = 640;
-      img.height = 360;
-      img.loading = "lazy";
-      img.decoding = "async";
-      img.addEventListener("error", () => {
-        tried++;
-        if (tried < sources.length) img.src = sources[tried];
-        else {
-          console.warn("Gambar gagal dimuat untuk project:", o.judul, sources);
-          img.remove();
-        }
-      });
-      card.append(img);
+    const media = fileInfo(o.gambar, o.tipe_file || o.tipe);
+    if (media && media.kind === "link") media.kind = "image"; /* tanpa ekstensi: coba sebagai gambar */
+    card._media = media || null;
+
+    const sources = o.pratinjau ? imageCandidates(o.pratinjau) : media ? media.thumbs : [];
+    const isPdf = media && (media.kind === "pdf" || media.kind === "drive");
+    const fallbackIcon = () =>
+      el("div", "project-thumb-fallback").appendChild(el("i", isPdf ? "bx bxs-file-pdf" : "bx bx-image")).parentNode;
+
+    if (media) {
+      if (sources.length) {
+        const img = document.createElement("img");
+        let tried = 0;
+        img.referrerPolicy = "no-referrer";
+        img.src = sources[0];
+        img.alt = o.alt_gambar || "Tampilan project " + o.judul;
+        img.width = 640;
+        img.height = 360;
+        img.loading = "lazy";
+        img.decoding = "async";
+        img.addEventListener("error", () => {
+          tried++;
+          if (tried < sources.length) img.src = sources[tried];
+          else {
+            console.warn("Gambar kartu gagal dimuat untuk project:", o.judul, sources);
+            img.replaceWith(fallbackIcon());
+          }
+        });
+        card.append(img);
+      } else {
+        card.append(fallbackIcon());
+      }
     } else if (o.gambar) {
       console.warn(
         "Isi kolom gambar tidak dikenali untuk project:",
         o.judul,
-        JSON.stringify(o.gambar),
+        JSON.stringify(o.gambar)
       );
     }
 
@@ -569,7 +614,7 @@ const CONFIG = {
     content.append(
       el("span", "project-category", o.kategori || "Lainnya"),
       el("h3", "", o.judul),
-      el("p", "", o.deskripsi || ""),
+      el("p", "", o.deskripsi || "")
     );
 
     const tags = splitList(o.tools);
@@ -589,7 +634,7 @@ const CONFIG = {
       a.append(
         el("i", "bx bxl-github"),
         " Lihat di GitHub ",
-        el("i", "bx bx-right-arrow-alt"),
+        el("i", "bx bx-right-arrow-alt")
       );
       wrap.append(a);
       content.append(wrap);
@@ -621,28 +666,11 @@ const CONFIG = {
     }
   };
 
-  /* ==========================================================
-     SERTIFIKAT (gambar / PDF) dari spreadsheet
-     Kolom: aktif, urutan, judul, penerbit, tanggal, file, pratinjau,
-            link_verifikasi, tipe, deskripsi
-  ========================================================== */
   const certGrid = document.querySelector(".certificate-grid");
   const canModal = typeof HTMLDialogElement === "function";
   /* Nama kolom yang dikenali (selain "file" dan "link_verifikasi") */
-  const FILE_KEYS = [
-    "file",
-    "link",
-    "link_sertifikat",
-    "url",
-    "berkas",
-    "tautan",
-  ];
-  const VERIF_KEYS = [
-    "link_verifikasi",
-    "verifikasi",
-    "link_kredensial",
-    "kredensial",
-  ];
+  const FILE_KEYS = ["file", "link", "link_sertifikat", "url", "berkas", "tautan"];
+  const VERIF_KEYS = ["link_verifikasi", "verifikasi", "link_kredensial", "kredensial"];
   const pick = (o, keys) => {
     for (const k of keys) if (o[k]) return o[k];
     return "";
@@ -671,17 +699,8 @@ const CONFIG = {
     if (t === "pdf" || PDF_EXT.test(safe)) {
       return { kind: "pdf", open: safe, embed: safe, thumbs: [] };
     }
-    if (
-      ["gambar", "image", "jpg", "jpeg", "png"].includes(t) ||
-      IMG_EXT.test(safe)
-    ) {
-      return {
-        kind: "image",
-        open: safe,
-        embed: "",
-        url: safe,
-        thumbs: [safe],
-      };
+    if (["gambar", "image", "jpg", "jpeg", "png"].includes(t) || IMG_EXT.test(safe)) {
+      return { kind: "image", open: safe, embed: "", url: safe, thumbs: [safe] };
     }
     return { kind: "link", open: safe, embed: "", thumbs: [] };
   };
@@ -714,15 +733,6 @@ const CONFIG = {
     const mActions = dialog.querySelector(".modal-actions");
     let lastTrigger = null;
 
-    const showEmpty = () =>
-      viewer.replaceChildren(
-        el(
-          "p",
-          "cert-empty",
-          "Pratinjau tidak tersedia untuk file ini. Gunakan tombol di bawah untuk membukanya.",
-        ),
-      );
-
     openCert = (c, trigger) => {
       mTitle.textContent = c.judul;
       const meta = [c.penerbit, c.tanggal].filter(Boolean).join(" · ");
@@ -732,27 +742,7 @@ const CONFIG = {
       mDesc.hidden = !c.deskripsi;
 
       const f = c.file;
-      viewer.replaceChildren();
-      viewer.className = "cert-viewer";
-
-      if (f.kind === "image") {
-        const img = document.createElement("img");
-        img.className = "cert-view-img";
-        img.referrerPolicy = "no-referrer";
-        img.alt = "Sertifikat " + c.judul;
-        img.addEventListener("error", showEmpty);
-        img.src = f.url;
-        viewer.append(img);
-      } else if (f.embed) {
-        const frame = document.createElement("iframe");
-        frame.className = "cert-frame";
-        frame.title = "Sertifikat " + c.judul;
-        frame.src = f.embed;
-        viewer.classList.add("has-frame");
-        viewer.append(frame);
-      } else {
-        showEmpty();
-      }
+      fillViewer(viewer, f, "Sertifikat " + c.judul);
 
       mActions.replaceChildren();
       const open = document.createElement("a");
@@ -811,31 +801,15 @@ const CONFIG = {
     c.verif = /^https?:\/\//i.test(v) ? v : "";
 
     if (rawFile && !c.file) {
+      console.warn("Link file tidak valid untuk sertifikat:", o.judul, JSON.stringify(rawFile));
+    } else if (rawFile && !/[/]/.test(rawFile) && !/^[a-z][a-z0-9+.-]*:/i.test(rawFile)) {
       console.warn(
-        "Link file tidak valid untuk sertifikat:",
-        o.judul,
-        JSON.stringify(rawFile),
-      );
-    } else if (
-      rawFile &&
-      !/[/]/.test(rawFile) &&
-      !/^[a-z][a-z0-9+.-]*:/i.test(rawFile)
-    ) {
-      console.warn(
-        "Kolom file untuk '" +
-          o.judul +
-          "' berisi '" +
-          rawFile +
-          "', bukan link. " +
-          "Jika itu chip Drive, hapus lalu tempel ulang sebagai teks biasa (Ctrl+Shift+V).",
+        "Kolom file untuk '" + o.judul + "' berisi '" + rawFile + "', bukan link. " +
+          "Jika itu chip Drive, hapus lalu tempel ulang sebagai teks biasa (Ctrl+Shift+V)."
       );
     }
     if (rawVerif && !c.verif) {
-      console.warn(
-        "Link verifikasi tidak valid untuk sertifikat:",
-        o.judul,
-        JSON.stringify(rawVerif),
-      );
+      console.warn("Link verifikasi tidak valid untuk sertifikat:", o.judul, JSON.stringify(rawVerif));
     }
 
     const card = el("div", "certificate-card");
@@ -844,10 +818,9 @@ const CONFIG = {
     const preview = o.pratinjau
       ? imageCandidates(o.pratinjau)
       : c.file
-        ? c.file.thumbs
-        : [];
-    const iconCls =
-      c.file && c.file.kind === "pdf" ? "bx bxs-file-pdf" : "bx bx-award";
+      ? c.file.thumbs
+      : [];
+    const iconCls = c.file && c.file.kind === "pdf" ? "bx bxs-file-pdf" : "bx bx-award";
 
     if (preview.length) {
       const thumb = el("div", "cert-thumb");
@@ -869,7 +842,9 @@ const CONFIG = {
       card.append(el("i", iconCls));
     }
 
-    card.append(el("h3", "", c.judul));
+    const title = el("h3", "", c.judul);
+    title.title = c.judul;
+    card.append(title);
     if (c.penerbit) card.append(el("p", "", c.penerbit));
     if (c.tanggal) card.append(el("p", "cert-date", c.tanggal));
 
@@ -916,7 +891,7 @@ const CONFIG = {
       console.warn(
         "Tidak ada sertifikat yang punya link. Isi kolom 'file' (link sertifikat) atau " +
           "'link_verifikasi'. Kolom yang terbaca:",
-        Object.keys(items[0]).filter((k) => k !== "index"),
+        Object.keys(items[0]).filter((k) => k !== "index")
       );
     }
     certGrid.replaceChildren(...items.map(buildCertCard));
@@ -924,19 +899,11 @@ const CONFIG = {
     setCount("certCount", items.length);
   };
 
-  /* Kartu dari index.html langsung dipasang fiturnya, lalu diganti
-     jika data spreadsheet berhasil dimuat. */
   setupProjects();
 
-  /* ==========================================================
-     SUMBER DATA
-     Urutan: (1) satu link spreadsheet, dibaca per nama tab;
-     (2) link CSV "Publish to web"; (3) file CSV di repository;
-     (4) kartu yang tertulis di index.html.
-  ========================================================== */
   const sheetId = (() => {
     const m = (CONFIG.spreadsheetUrl || "").match(
-      /spreadsheets\/d\/(?!e\/)([\w-]{20,})/,
+      /spreadsheets\/d\/(?!e\/)([\w-]{20,})/
     );
     return m ? m[1] : "";
   })();
@@ -944,26 +911,19 @@ const CONFIG = {
   if (CONFIG.spreadsheetUrl && !sheetId) {
     console.warn(
       "spreadsheetUrl tidak dikenali. Pakai link dari tombol Bagikan " +
-        "(https://docs.google.com/spreadsheets/d/ID/edit...), bukan link Publish to web.",
+        "(https://docs.google.com/spreadsheets/d/ID/edit...), bukan link Publish to web."
     );
   }
 
   const gvizUrl = (name, tqx) =>
-    "https://docs.google.com/spreadsheets/d/" +
-    sheetId +
-    "/gviz/tq?headers=1&sheet=" +
-    encodeURIComponent(name) +
-    "&tqx=" +
-    encodeURIComponent(tqx);
+    "https://docs.google.com/spreadsheets/d/" + sheetId +
+    "/gviz/tq?headers=1&sheet=" + encodeURIComponent(name) +
+    "&tqx=" + encodeURIComponent(tqx);
 
-  /* Google diam-diam memberi tab pertama jika nama tab salah, jadi pastikan
-     kolomnya sesuai dengan jenis data yang diminta. */
   const checkRows = (rows, name, anyOf) => {
     const keys = (rows[0] || []).map(normKey);
     if (!keys.includes("judul") || !anyOf.some((k) => keys.includes(k))) {
-      throw new Error(
-        'Tab "' + name + '" tidak ditemukan atau kolomnya tidak sesuai',
-      );
+      throw new Error('Tab "' + name + '" tidak ditemukan atau kolomnya tidak sesuai');
     }
     return rows;
   };
@@ -972,9 +932,7 @@ const CONFIG = {
   const gvizCsv = (name, anyOf) => async () => {
     const text = await fetchText(gvizUrl(name, "out:csv"));
     if (/^\s*<(?:!doctype|html)/i.test(text)) {
-      throw new Error(
-        "Spreadsheet belum dibagikan sebagai 'Siapa saja yang memiliki link'",
-      );
+      throw new Error("Spreadsheet belum dibagikan sebagai 'Siapa saja yang memiliki link'");
     }
     return checkRows(parseCSV(text), name, anyOf);
   };
@@ -1000,17 +958,12 @@ const CONFIG = {
         finish();
         try {
           if (!resp || resp.status !== "ok" || !resp.table) {
-            throw new Error(
-              "Spreadsheet tidak bisa dibaca (cek pengaturan berbagi)",
-            );
+            throw new Error("Spreadsheet tidak bisa dibaca (cek pengaturan berbagi)");
           }
-          const cell = (c) =>
-            c == null ? "" : String(c.f != null ? c.f : c.v == null ? "" : c.v);
+          const cell = (c) => (c == null ? "" : String(c.f != null ? c.f : c.v == null ? "" : c.v));
           const head = resp.table.cols.map((c) => c.label || "");
           const rows = [head].concat(
-            resp.table.rows.map((r) =>
-              head.map((_, i) => cell((r.c || [])[i])),
-            ),
+            resp.table.rows.map((r) => head.map((_, i) => cell((r.c || [])[i])))
           );
           resolve(checkRows(rows, name, anyOf));
         } catch (err) {
@@ -1030,14 +983,8 @@ const CONFIG = {
   const sourcesFor = (sheetName, anyOf, csvUrl, repoFile) => {
     const list = [];
     if (sheetId) {
-      list.push({
-        name: "Google Sheets, tab " + sheetName,
-        get: gvizCsv(sheetName, anyOf),
-      });
-      list.push({
-        name: "Google Sheets (JSONP), tab " + sheetName,
-        get: gvizJsonp(sheetName, anyOf),
-      });
+      list.push({ name: "Google Sheets, tab " + sheetName, get: gvizCsv(sheetName, anyOf) });
+      list.push({ name: "Google Sheets (JSONP), tab " + sheetName, get: gvizJsonp(sheetName, anyOf) });
     }
     if (csvUrl) list.push({ name: csvUrl, get: csvSource(csvUrl) });
     if (repoFile) list.push({ name: repoFile, get: csvSource(repoFile) });
@@ -1049,25 +996,13 @@ const CONFIG = {
       try {
         const items = parseProjects(await src.get()).filter(keep);
         if (items.length) {
-          console.info(
-            label + " dimuat dari",
-            src.name,
-            "-",
-            items.length,
-            "baris aktif:",
-            items.map((x) => x.judul),
-          );
+          console.info(label + " dimuat dari", src.name, "-", items.length, "baris aktif:", items.map((x) => x.judul));
           render(items);
           return;
         }
         console.warn("Tidak ada " + label + " aktif di:", src.name);
       } catch (err) {
-        console.warn(
-          "Gagal memuat " + label + " dari:",
-          src.name,
-          "-",
-          err.message || err,
-        );
+        console.warn("Gagal memuat " + label + " dari:", src.name, "-", err.message || err);
       }
     }
   };
@@ -1077,28 +1012,18 @@ const CONFIG = {
 
   if (grid) {
     loadInto(
-      sourcesFor(
-        CONFIG.projectSheet,
-        ["kategori", "deskripsi"],
-        CONFIG.sheetUrl,
-        CONFIG.csvFile,
-      ),
+      sourcesFor(CONFIG.projectSheet, ["kategori", "deskripsi"], CONFIG.sheetUrl, CONFIG.csvFile),
       renderProjects,
       "Project",
-      notCert,
+      notCert
     );
   }
   if (certGrid) {
     loadInto(
-      sourcesFor(
-        CONFIG.certSheet,
-        ["penerbit", "file"],
-        CONFIG.certSheetUrl,
-        CONFIG.certCsvFile,
-      ),
+      sourcesFor(CONFIG.certSheet, ["penerbit", "file"], CONFIG.certSheetUrl, CONFIG.certCsvFile),
       renderCertificates,
       "Sertifikat",
-      () => true,
+      () => true
     );
   }
 })();
